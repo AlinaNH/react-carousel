@@ -1,7 +1,23 @@
 .slide-container {
-    white-space: pre-line;
+  white-space: pre-line;
+  min-height: 100%;
+  margin-top: 2vw;
 }
 
 .slide-container img {
-    width: 100%;
+  width: 50vw;
+  min-height: calc(40vw - 80px);
+  object-fit: cover;
+}
+
+.slide-container div {
+  margin: 0;
+  padding: 5vw;
+  font-family: Verdana, sans-serif;
+  font-size: 1vw;
+}
+
+.slide-container iframe {
+  width: 50vw;
+  min-height: calc(40vw - 80px);
 }

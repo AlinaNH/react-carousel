@@ -1,6 +1,7 @@
 import React from "react";
+import "./CarouselArrows.css";
 
-export const SlideNav = (props) => {
+export const CarouselArrows = (props) => {
   const showSlide = (slideNumber) => {
     const slides = document.querySelectorAll(".slide-container");
     let nextSlide = slideNumber % slides.length;
@@ -25,7 +26,7 @@ export const SlideNav = (props) => {
   }
 
   return (
-    <div className="slidenav-container">
+    <div className="carousel-arrows-container">
       <a className="prev-slide-button" onClick={() => changeSlide("prev")}>&#10094;</a>
       <a className="next-slide-button" onClick={() => changeSlide("next")}>&#10095;</a>
     </div>

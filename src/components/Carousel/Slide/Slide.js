@@ -24,7 +24,7 @@ export const Slide = (props) => {
         break;
 
       case "video":
-        result = (<iframe width="560" height="315" src={ props.content }></iframe>);
+        result = (<iframe src={ props.content }></iframe>);
         break;
     }
     return result;

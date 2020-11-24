@@ -1,0 +1,35 @@
+.carousel-arrows-container {
+  width: 100%;
+  padding: 1vw;
+  position: absolute;
+  top: 17vw;
+}
+
+.prev-slide-button, .next-slide-button {
+  width: 2vw;
+  height: 2vw;
+  padding: 0.25vw;
+  background-color: #494949;
+  border-radius: 2vw;
+  text-align: center;
+  font-size: 1vw;
+  font-weight: bold;
+  color: #FFF;
+  mix-blend-mode: multiply;
+  cursor: pointer;
+}
+
+.prev-slide-button:hover,
+.next-slide-button:hover,
+.prev-slide-button:active,
+.next-slide-button:active {
+  background-color: #333333;
+}
+
+.prev-slide-button {
+  float: left;
+}
+
+.next-slide-button {
+  float: right;
+}
