@@ -1,12 +1,30 @@
-import React, { Component } from "react";
+import React from "react";
+import { Carousel } from "./Carousel/Carousel";
+import { Slide } from "./Carousel/Slide/Slide";
+import { DATA } from "./../sources/data";
 import "./App.css";
 
-export default class App extends Component {
-  render() {
-    return (
-      <div>
-          <h1>React carousel</h1>
-      </div>
-    )
-  }
+export const App = () => {
+  return (
+    <div className="app-container">
+      <Carousel>
+        <Slide type="image" content={ DATA.imgIndonesia } active />
+        <Slide type="text" content={ DATA.articleIndonesia } />
+
+        <Slide type="image" content={ DATA.imgIndia } />
+        <Slide type="text" content={ DATA.articleIndia } />
+
+        <Slide type="image" content={ DATA.imgJapan } />
+        <Slide type="text" content={ DATA.articleJapan } />
+
+        <Slide type="image" content={ DATA.imgThailand } />
+        <Slide type="text" content={ DATA.articleThailand } />
+
+        <Slide type="image" content={ DATA.imgChina } />
+        <Slide type="text" content={ DATA.articleChina } />
+
+        <Slide type="video" content={ DATA.videoCountries } />
+      </Carousel>
+    </div>
+  );
 }
