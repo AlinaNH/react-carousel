@@ -1,0 +1,21 @@
+.carousel-dots-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  margin-top: 1vw;
+}
+
+.carousel-dot { 
+  width: 0.8vw;
+  height: 0.8vw;
+  border-radius: 0.8vw;
+  background-color: #494949;
+  margin: 0 0.1vw;
+  cursor: pointer;
+}
+
+.carousel-dot:hover,
+.carousel-dot:active {
+  background-color: #333333;
+}

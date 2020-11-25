@@ -5,11 +5,8 @@ export const CarouselArrows = (props) => {
   const showSlide = (slideNumber) => {
     const slides = document.querySelectorAll(".slide-container");
     let nextSlide = slideNumber % slides.length;
-
     if (nextSlide < 0) nextSlide = slides.length - 1;
-    props.setCurrentSlide(nextSlide);
-    slides[props.currentSlide].style.display = "none";
-    slides[nextSlide].style.display = "block";
+    props.handleSlideChange(nextSlide);
   }
 
   const changeSlide = (path) => {
