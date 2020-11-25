@@ -7,7 +7,10 @@ import "./App.css";
 export const App = () => {
   return (
     <div className="app-container">
-      <Carousel>
+      <Carousel
+        enableNav={ true }
+        navTitle="Best countries to visit in Asia"
+      >
         <Slide type="image" content={ DATA.imgIndonesia } active />
         <Slide type="text" content={ DATA.articleIndonesia } />
 

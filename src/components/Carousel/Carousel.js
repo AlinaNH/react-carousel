@@ -1,9 +1,13 @@
 import React from "react";
+import { CarouselNav } from "./CarouselNav/CarouselNav";
 import { CarouselArrows } from "./CarouselArrows/CarouselArrows";
 import { CarouselDots } from './CarouselDots/CarouselDots';
 
 export const Carousel = (props) => {
   let currentSlide = 0;
+  let infinityMode = false;
+  const toggleInfinityMode = () => infinityMode = !infinityMode;
+  const getInfinityMode = () => infinityMode;
 
   const handleSlideChange = (nextSlide) => {
     const slides = document.querySelectorAll(".slide-container");
@@ -19,7 +23,8 @@ export const Carousel = (props) => {
 
   return (
     <div className="carousel-container">
-      <CarouselArrows handleSlideChange={ handleSlideChange } />
+      <CarouselNav title={ props.navTitle } toggleInfinityMode={ toggleInfinityMode } />
+      <CarouselArrows handleSlideChange={ handleSlideChange } getInfinityMode={ getInfinityMode } />
       { props.children }
       <CarouselDots handleSlideChange={ handleSlideChange } />
     </div>

@@ -1,0 +1,22 @@
+.carousel-nav-container {
+  padding: 0.5vw 1vw;
+  background-color: #494949;
+  font-family: Verdana, sans-serif;
+  font-size: 1.1vw;
+  color: white;
+}
+
+.carousel-nav-button-container {
+  display: inline;
+  float: right;
+  font-size: 0.7vw;
+  line-height:25px;
+}
+
+.carousel-nav-button-container > label {
+  padding: 0 0.2vw;
+}
+
+.carousel-nav-button-container > input {
+  vertical-align: middle;
+}

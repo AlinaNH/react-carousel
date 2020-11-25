@@ -1,7 +1,6 @@
 .slide-container {
   white-space: pre-line;
-  height: 35vw;
-  margin-top: 2vw;
+  height: 35vw; 
   animation: fadeSlide 1.5s;
   -webkit-animation: fadeSlide 1.5s;
 }
