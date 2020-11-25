@@ -3,6 +3,7 @@
   padding: 1vw;
   position: absolute;
   top: 17vw;
+  z-index: 1;
 }
 
 .prev-slide-button, .next-slide-button {

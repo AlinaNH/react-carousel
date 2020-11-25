@@ -2,6 +2,8 @@
   white-space: pre-line;
   min-height: 100%;
   margin-top: 2vw;
+  animation: fadeSlide 1.5s;
+  -webkit-animation: fadeSlide 1.5s;
 }
 
 .slide-container img {
@@ -20,4 +22,14 @@
 .slide-container iframe {
   width: 50vw;
   min-height: calc(40vw - 80px);
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0.3 }
+  to { opacity: 1 }
+}
+
+@-webkit-keyframes fadeSlide {
+  from { opacity: 0.3 }
+  to { opacity: 1 }
 }
