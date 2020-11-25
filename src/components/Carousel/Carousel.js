@@ -9,9 +9,9 @@ export const Carousel = (props) => {
     const slides = document.querySelectorAll(".slide-container");
     const dots = document.querySelectorAll(".carousel-dot");
 
+    dots[currentSlide].style.backgroundColor = "#494949";
     slides[currentSlide].style.display = "none";
     slides[nextSlide].style.display = "block";
-    dots[currentSlide].style.backgroundColor = "#494949";
     dots[nextSlide].style.backgroundColor = "#3e728a";
 
     currentSlide = nextSlide;
@@ -19,9 +19,9 @@ export const Carousel = (props) => {
 
   return (
     <div className="carousel-container">
-      <CarouselArrows currentSlide={ currentSlide } handleSlideChange={ handleSlideChange} />
+      <CarouselArrows handleSlideChange={ handleSlideChange } />
       { props.children }
-      <CarouselDots handleSlideChange={ handleSlideChange} />
+      <CarouselDots handleSlideChange={ handleSlideChange } />
     </div>
   )
 }
