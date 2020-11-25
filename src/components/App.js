@@ -1,5 +1,5 @@
 import React from "react";
-import { Carousel } from "./Carousel/Carousel";
+import Carousel from "./Carousel/Carousel";
 import { Slide } from "./Carousel/Slide/Slide";
 import { DATA } from "./../sources/data";
 import "./App.css";

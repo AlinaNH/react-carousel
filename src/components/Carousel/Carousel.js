@@ -1,32 +1,52 @@
-import React from "react";
+import React, { Component } from "react";
 import { CarouselNav } from "./CarouselNav/CarouselNav";
 import { CarouselArrows } from "./CarouselArrows/CarouselArrows";
 import { CarouselDots } from './CarouselDots/CarouselDots';
 
-export const Carousel = (props) => {
-  let currentSlide = 0;
-  let infinityMode = false;
-  const toggleInfinityMode = () => infinityMode = !infinityMode;
-  const getInfinityMode = () => infinityMode;
+export default class Carousel extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentSlide: 0,
+      infinityMode: false
+    };
+    this.handleSlideChange = this.handleSlideChange.bind(this);
+    this.toggleInfinityMode = this.toggleInfinityMode.bind(this);
+  }
 
-  const handleSlideChange = (nextSlide) => {
+  toggleInfinityMode() {
+    this.setState({ infinityMode: !this.state.infinityMode });
+  }
+
+  handleSlideChange(nextSlide) {
     const slides = document.querySelectorAll(".slide-container");
     const dots = document.querySelectorAll(".carousel-dot");
 
-    dots[currentSlide].style.backgroundColor = "#494949";
-    slides[currentSlide].style.display = "none";
+    dots[this.state.currentSlide].style.backgroundColor = "#494949";
+    slides[this.state.currentSlide].style.display = "none";
     slides[nextSlide].style.display = "block";
     dots[nextSlide].style.backgroundColor = "#3e728a";
 
-    currentSlide = nextSlide;
+    this.setState({ currentSlide: nextSlide });
   }
 
-  return (
-    <div className="carousel-container">
-      <CarouselNav title={ props.navTitle } toggleInfinityMode={ toggleInfinityMode } />
-      <CarouselArrows handleSlideChange={ handleSlideChange } getInfinityMode={ getInfinityMode } />
-      { props.children }
-      <CarouselDots handleSlideChange={ handleSlideChange } />
+  render() {
+    return (
+      <div className="carousel-container">
+       <CarouselNav
+        title={ this.props.navTitle }
+        toggleInfinityMode= { this.toggleInfinityMode }
+      />
+      <CarouselArrows
+        currentSlide={ this.state.currentSlide }
+        infinityMode={ this.state. infinityMode }
+        handleSlideChange={ this.handleSlideChange }
+      />
+      { this.props.children }
+      <CarouselDots
+        handleSlideChange={ this.handleSlideChange }
+      />
     </div>
-  )
+    );
+  }
 }

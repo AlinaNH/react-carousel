@@ -5,7 +5,7 @@ export const CarouselDots = (props) => {
   const [casouselDots, setCarouselDots] = useState([]);
 
   const showChosenSlide = (event) => {
-    const chosenSlide = event.target.getAttribute("data-dot-id");
+    const chosenSlide = +event.target.getAttribute("data-dot-id");
     props.handleSlideChange(chosenSlide);
   }
 
