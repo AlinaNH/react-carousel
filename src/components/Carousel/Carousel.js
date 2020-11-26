@@ -32,42 +32,61 @@ export default class Carousel extends Component {
     this.hideInactiveSlides();
   }
 
+  changeSlideAndDotByIndex(index, operation) {
+    const slides = document.querySelectorAll(".slide-container");
+    const dots = document.querySelectorAll(".carousel-dot");
+    if (operation === "show") {
+      slides[index].style.display = "block";
+      dots[index].style.backgroundColor = "#3e728a";
+    }
+    if (operation === "hide") {
+      slides[index].style.display = "none";
+      dots[index].style.backgroundColor = "#494949";
+    }
+  }
+
   renderActiveSlides() {
     this.setState(
       { currentSlide: this.state.currentSlide },
       () => {
         const slides = document.querySelectorAll(".slide-container");
-        const dots = document.querySelectorAll(".carousel-dot");
-        let index;
 
-        for(let i = 0; i < this.state.activeSlides; i++) {
-          index = this.state.currentSlide + i;
-          if (index === slides.length) index = slides.length - 2;
-          slides[index].style.display = "block";
+        this.changeSlideAndDotByIndex(this.state.currentSlide, "show");
+        if (this.state.activeSlides === 2) {
+          if(this.state.currentSlide === slides.length - 1) {
+            this.changeSlideAndDotByIndex(0, "show");
+            this.changeSlideAndDotByIndex(slides.length - 1, "show");
+          }
+
+          if(this.state.currentSlide === slides.length - 2)
+            this.changeSlideAndDotByIndex(slides.length - 1, "show");
+
+          (this.state.currentSlide + 1 < slides.length - 1)
+            ? this.changeSlideAndDotByIndex(this.state.currentSlide + 1, "show")
+            : this.changeSlideAndDotByIndex(this.state.currentSlide, "show");
         }
-
-        slides.forEach((slide, index) => {
-          (slide.style.display === "block")
-            ? dots[index].style.backgroundColor = "#3e728a"
-            : dots[index].style.backgroundColor = "#494949";
-        });
        }
     );
   }
 
   hideInactiveSlides() {
     const slides = document.querySelectorAll(".slide-container");
-    const dots = document.querySelectorAll(".carousel-dot");
-    let index = 0;
 
-    for(let i = this.state.activeSlides; i > 0; i--) {
-      if(this.state.currentSlide > slides.length - 1) return;
-      if ((this.state.activeSlides > 1) && (this.state.currentSlide < slides.length - 1)) {
-        slides[this.state.currentSlide + 1 - index].style.display = "none";
-      } else {
-        slides[this.state.currentSlide - index].style.display = "none";
-      }
-      ++index;
+    this.changeSlideAndDotByIndex(this.state.currentSlide, "hide");
+    if (this.state.activeSlides === 2) {
+      if(this.state.currentSlide === slides.length - 1)
+        this.changeSlideAndDotByIndex(0, "hide");
+
+      if(this.state.currentSlide === 0) 
+        this.changeSlideAndDotByIndex(slides.length - 1, "hide");
+      
+        if(this.state.currentSlide === slides.length - 2) {
+          this.changeSlideAndDotByIndex(slides.length - 1, "hide");
+        }
+    
+      (this.state.currentSlide + 1 < slides.length - 1)
+      ? this.changeSlideAndDotByIndex(this.state.currentSlide + 1, "hide")
+      : this.changeSlideAndDotByIndex(this.state.currentSlide, "hide");
     }
   }
 
@@ -88,16 +107,21 @@ export default class Carousel extends Component {
   }
 
   onTouchEnd(e) {
-    const touch = e.changedTouches[0].pageX;
-    this.setState( { touchMoveEnd: touch }, () => {
-      (this.state.touchMoveEnd < this.state.touchMoveStart)
-        ? document
-          .querySelector('.next-slide-button')
-          .dispatchEvent(new Event("click", { bubbles: true }))
-        : document
-          .querySelector('.prev-slide-button')
-          .dispatchEvent(new Event("click", { bubbles: true }))
-    });
+    if (
+        (e.target !== document.querySelector('.next-slide-button')) &&
+        (e.target !== document.querySelector('.prev-slide-button'))
+      ) {
+      const touch = e.changedTouches[0].pageX;
+      this.setState( { touchMoveEnd: touch }, () => {
+        (this.state.touchMoveEnd < this.state.touchMoveStart)
+          ? document
+            .querySelector('.next-slide-button')
+            .dispatchEvent(new Event("click", { bubbles: true }))
+          : document
+            .querySelector('.prev-slide-button')
+            .dispatchEvent(new Event("click", { bubbles: true }))
+      });
+    }
   }
 
   render() {
