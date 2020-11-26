@@ -11,7 +11,7 @@ export const App = () => {
         enableNav={ true }
         navTitle="Best countries to visit in Asia"
       >
-        <Slide type="image" content={ DATA.imgIndonesia } active />
+        <Slide type="image" content={ DATA.imgIndonesia } />
         <Slide type="text" content={ DATA.articleIndonesia } />
 
         <Slide type="image" content={ DATA.imgIndia } />

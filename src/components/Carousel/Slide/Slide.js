@@ -1,16 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./Slide.css";
 
 export const Slide = (props) => {
-  const [display, setDisplay] = useState('none');
-
-  const renderActive = () => {
-    if(props.active) {
-      useEffect(() => {
-        setDisplay('block')
-      }, [display]);
-    }
-  }
 
   const renderContent = () => {
     let result;
@@ -31,8 +22,7 @@ export const Slide = (props) => {
   }
 
   return (
-    <div className="slide-container" style={{display}}>
-      { renderActive() }
+    <div className="slide-container">
       { renderContent() }
     </div>
   )

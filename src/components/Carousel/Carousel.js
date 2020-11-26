@@ -8,38 +8,97 @@ export default class Carousel extends Component {
     super(props);
     this.state = {
       currentSlide: 0,
-      infinityMode: false
+      infinityMode: false,
+      activeSlides: 1
     };
-    this.handleSlideChange = this.handleSlideChange.bind(this);
     this.toggleInfinityMode = this.toggleInfinityMode.bind(this);
+    this.setActiveSlides = this.setActiveSlides.bind(this);
+    this.renderActiveSlides = this.renderActiveSlides.bind(this);
+    this.handleSlideChange = this.handleSlideChange.bind(this);
   }
 
   toggleInfinityMode() {
     this.setState({ infinityMode: !this.state.infinityMode });
   }
 
-  handleSlideChange(nextSlide) {
+  setActiveSlides(quantity) {
+    this.setState({ activeSlides: quantity });
+    this.renderActiveSlides();
+    this.hideInactiveSlides();
+  }
+
+  renderActiveSlides() {
+    this.setState(
+      { currentSlide: this.state.currentSlide },
+      () => {
+        const slides = document.querySelectorAll(".slide-container");
+        const dots = document.querySelectorAll(".carousel-dot");
+        let index;
+
+        for(let i = 0; i < this.state.activeSlides; i++) {
+          index = this.state.currentSlide + i;
+          if (index === slides.length) index = slides.length - 2;
+          slides[index].style.display = "block";
+        }
+
+        slides.forEach((slide, index) => {
+          if (slide.style.display === "block") {
+            dots[index].style.backgroundColor = "#3e728a";
+          }
+        });
+       }
+    );
+  }
+
+  hideInactiveSlides() {
     const slides = document.querySelectorAll(".slide-container");
     const dots = document.querySelectorAll(".carousel-dot");
+    let index = 0;
 
-    dots[this.state.currentSlide].style.backgroundColor = "#494949";
-    slides[this.state.currentSlide].style.display = "none";
-    slides[nextSlide].style.display = "block";
-    dots[nextSlide].style.backgroundColor = "#3e728a";
+    for(let i = this.state.activeSlides; i > 0; i--) {
+      if(this.state.currentSlide > slides.length - 1) return;
+      if ((this.state.activeSlides > 1) && (this.state.currentSlide < slides.length - 1)) {
+        slides[this.state.currentSlide + 1 - index].style.display = "none";
+      } else {
+        slides[this.state.currentSlide - index].style.display = "none";
+      }
+      ++index;
+    }
 
-    this.setState({ currentSlide: nextSlide });
+    slides.forEach((slide, index) => {
+      if (slide.style.display === "none") {
+        dots[index].style.backgroundColor = "#494949";
+      }
+    });
+  }
+
+  handleSlideChange(nextSlide) {
+    this.hideInactiveSlides();
+    this.setState({ currentSlide: nextSlide }, () => {
+        this.renderActiveSlides();
+    });
+  }
+
+  componentDidMount() {
+    this.renderActiveSlides();
   }
 
   render() {
     return (
       <div className="carousel-container">
-       <CarouselNav
-        title={ this.props.navTitle }
-        toggleInfinityMode= { this.toggleInfinityMode }
-      />
+      {
+        (this.props.enableNav)
+          ? <CarouselNav
+              title={ this.props.navTitle }
+              toggleInfinityMode={ this.toggleInfinityMode }
+              setActiveSlides={ this.setActiveSlides }
+            />
+          : <></>
+      }
       <CarouselArrows
         currentSlide={ this.state.currentSlide }
-        infinityMode={ this.state. infinityMode }
+        infinityMode={ this.state.infinityMode }
+        activeSlides={ this.state.activeSlides }
         handleSlideChange={ this.handleSlideChange }
       />
       { this.props.children }
