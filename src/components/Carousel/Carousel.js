@@ -9,12 +9,16 @@ export default class Carousel extends Component {
     this.state = {
       currentSlide: 0,
       infinityMode: false,
-      activeSlides: 1
+      activeSlides: 1,
+      touchMoveStart: 0,
+      touchMoveEnd: 0
     };
     this.toggleInfinityMode = this.toggleInfinityMode.bind(this);
     this.setActiveSlides = this.setActiveSlides.bind(this);
     this.renderActiveSlides = this.renderActiveSlides.bind(this);
     this.handleSlideChange = this.handleSlideChange.bind(this);
+    this.onTouchStart = this.onTouchStart.bind(this);
+    this.onTouchEnd = this.onTouchEnd.bind(this);
   }
 
   toggleInfinityMode() {
@@ -42,9 +46,9 @@ export default class Carousel extends Component {
         }
 
         slides.forEach((slide, index) => {
-          if (slide.style.display === "block") {
-            dots[index].style.backgroundColor = "#3e728a";
-          }
+          (slide.style.display === "block")
+            ? dots[index].style.backgroundColor = "#3e728a"
+            : dots[index].style.backgroundColor = "#494949";
         });
        }
     );
@@ -64,12 +68,6 @@ export default class Carousel extends Component {
       }
       ++index;
     }
-
-    slides.forEach((slide, index) => {
-      if (slide.style.display === "none") {
-        dots[index].style.backgroundColor = "#494949";
-      }
-    });
   }
 
   handleSlideChange(nextSlide) {
@@ -83,9 +81,31 @@ export default class Carousel extends Component {
     this.renderActiveSlides();
   }
 
+  onTouchStart(e) {
+    const touch = e.changedTouches[0].pageX;
+    this.setState( { touchMoveStart: touch });
+  }
+
+  onTouchEnd(e) {
+    const touch = e.changedTouches[0].pageX;
+    this.setState( { touchMoveEnd: touch }, () => {
+      (this.state.touchMoveEnd < this.state.touchMoveStart)
+        ? document
+          .querySelector('.next-slide-button')
+          .dispatchEvent(new Event("click", { bubbles: true }))
+        : document
+          .querySelector('.prev-slide-button')
+          .dispatchEvent(new Event("click", { bubbles: true }))
+    });
+  }
+
   render() {
     return (
-      <div className="carousel-container">
+      <div
+        className="carousel-container"
+        onTouchStart = { this.onTouchStart }
+        onTouchEnd = { this.onTouchEnd }
+      >
       {
         (this.props.enableNav)
           ? <CarouselNav
