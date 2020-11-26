@@ -34,3 +34,31 @@
 .next-slide-button {
   float: right;
 }
+
+@media screen and (max-width: 415px) {
+  .carousel-arrows-container {
+    top: 45vw;
+  }
+
+  .prev-slide-button, .next-slide-button {
+    width: 6vw;
+    height: 6vw;
+    padding: 1vw;
+    border-radius: 6vw;
+    font-size: 3vw;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .carousel-arrows-container {
+    top: 40vw;
+  }
+
+  .prev-slide-button, .next-slide-button {
+    width: 5vw;
+    height: 5vw;
+    padding: 1vw;
+    border-radius: 5vw;
+    font-size: 2.3vw;
+  }
+}

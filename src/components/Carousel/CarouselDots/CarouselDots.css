@@ -19,3 +19,28 @@
 .carousel-dot:active {
   background-color: #333333;
 }
+
+@media screen and (max-width: 415px) {
+  .carousel-dots-container {
+    margin-top: 3vw;
+  }
+
+  .carousel-dot {
+    width: 2.5vw;
+    height: 2.5vw;
+    border-radius: 2.5vw;
+    margin: 0 0.3vw;
+  }
+}
+
+@media screen and (min-width: 415px) and (max-width: 736px) {
+  .carousel-dots-container {
+    margin-top: 0.5vw;
+  }
+}
+
+@media screen and (max-height: 320px) {
+  .carousel-dots-container {
+    margin-top: 0.1vw;
+  }
+}

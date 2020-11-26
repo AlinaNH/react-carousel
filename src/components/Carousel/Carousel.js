@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { CarouselNav } from "./CarouselNav/CarouselNav";
 import { CarouselArrows } from "./CarouselArrows/CarouselArrows";
 import { CarouselDots } from './CarouselDots/CarouselDots';
+import "./Carousel.css";
 
 export default class Carousel extends Component {
   constructor(props) {
