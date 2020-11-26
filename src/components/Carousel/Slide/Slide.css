@@ -13,10 +13,13 @@
 }
 
 .slide-container div {
-  margin: 0;
+  height: 100;
+  max-height: calc(40vw - 80px);
   padding: 5vw;
   font-family: Verdana, sans-serif;
   font-size: 1vw;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .slide-container iframe {

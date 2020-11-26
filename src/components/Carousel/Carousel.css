@@ -4,3 +4,8 @@
     height: 90%;
   }
 }
+
+.slides-container {
+  display: flex;
+  flex-direction: row;
+}

@@ -26,12 +26,6 @@ export default class Carousel extends Component {
     this.setState({ infinityMode: !this.state.infinityMode });
   }
 
-  setActiveSlides(quantity) {
-    this.setState({ activeSlides: quantity });
-    this.renderActiveSlides();
-    this.hideInactiveSlides();
-  }
-
   changeSlideAndDotByIndex(index, operation) {
     const slides = document.querySelectorAll(".slide-container");
     const dots = document.querySelectorAll(".carousel-dot");
@@ -64,8 +58,15 @@ export default class Carousel extends Component {
           (this.state.currentSlide + 1 < slides.length - 1)
             ? this.changeSlideAndDotByIndex(this.state.currentSlide + 1, "show")
             : this.changeSlideAndDotByIndex(this.state.currentSlide, "show");
+          
+          [...slides].forEach((slide) => {
+            const totalWidth = document.querySelector('.carousel-container');
+            if (slide.style.display === "block") {
+              slide.firstChild.style.width = totalWidth.clientWidth / 2 + "px";
+            }
+          });
         }
-       }
+      }
     );
   }
 
@@ -88,6 +89,32 @@ export default class Carousel extends Component {
       ? this.changeSlideAndDotByIndex(this.state.currentSlide + 1, "hide")
       : this.changeSlideAndDotByIndex(this.state.currentSlide, "hide");
     }
+
+    if (this.state.activeSlides === 1) {
+      this.changeSlideAndDotByIndex(this.state.currentSlide + 1, "hide");
+      const totalWidth = document.querySelector('.carousel-container').clientWidth;
+      slides[this.state.currentSlide].firstChild.style.width = totalWidth + "px";
+      slides[this.state.currentSlide + 1].firstChild.style.width = totalWidth + "px";
+    }
+  }
+
+  setActiveSlides(quantity) {
+    this.setState({ activeSlides: quantity }, () => {
+      this.renderActiveSlides();
+      this.hideInactiveSlides();
+    });
+  }
+
+  changeSlidesWidth() {
+    const slides = document.querySelectorAll(".slide-container");
+    [...slides].forEach((slide, i) => {
+      if (slide.style.display === "block") {
+        if (this.state.activeSlides === 2)
+          slide.firstChild.style.width = slide.firstChild.clientWidth / 2 + "px";
+        if (this.state.activeSlides === 1)
+          slide.firstChild.style.width = "100%";
+      }
+    });
   }
 
   handleSlideChange(nextSlide) {
@@ -146,7 +173,9 @@ export default class Carousel extends Component {
         activeSlides={ this.state.activeSlides }
         handleSlideChange={ this.handleSlideChange }
       />
-      { this.props.children }
+      <div className="slides-container">
+        { this.props.children }
+      </div>
       <CarouselDots
         handleSlideChange={ this.handleSlideChange }
       />
