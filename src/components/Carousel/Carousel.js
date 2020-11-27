@@ -44,7 +44,7 @@ export default class Carousel extends Component {
       { currentSlide: this.state.currentSlide },
       () => {
         const slides = document.querySelectorAll(".slide-container");
-
+        const totalWidth = document.querySelector('.carousel-container');
         this.changeSlideAndDotByIndex(this.state.currentSlide, "show");
         if (this.state.activeSlides === 2) {
           if(this.state.currentSlide === slides.length - 1) {
@@ -60,10 +60,14 @@ export default class Carousel extends Component {
             : this.changeSlideAndDotByIndex(this.state.currentSlide, "show");
           
           [...slides].forEach((slide) => {
-            const totalWidth = document.querySelector('.carousel-container');
             if (slide.style.display === "block") {
               slide.firstChild.style.width = totalWidth.clientWidth / 2 + "px";
             }
+          });
+        }
+        if (this.state.activeSlides === 1) {
+          [...slides].forEach((slide) => {
+              slide.firstChild.style.width = totalWidth.clientWidth + "px";
           });
         }
       }
@@ -91,10 +95,13 @@ export default class Carousel extends Component {
     }
 
     if (this.state.activeSlides === 1) {
-      this.changeSlideAndDotByIndex(this.state.currentSlide + 1, "hide");
-      const totalWidth = document.querySelector('.carousel-container').clientWidth;
-      slides[this.state.currentSlide].firstChild.style.width = totalWidth + "px";
-      slides[this.state.currentSlide + 1].firstChild.style.width = totalWidth + "px";
+      if (this.state.currentSlide === slides.length - 1) return;
+      else {
+        this.changeSlideAndDotByIndex(this.state.currentSlide + 1, "hide");
+        const totalWidth = document.querySelector('.carousel-container').clientWidth;
+        slides[this.state.currentSlide].firstChild.style.width = totalWidth + "px";
+        slides[this.state.currentSlide + 1].firstChild.style.width = totalWidth + "px";
+      }
     }
   }
 
@@ -102,18 +109,6 @@ export default class Carousel extends Component {
     this.setState({ activeSlides: quantity }, () => {
       this.renderActiveSlides();
       this.hideInactiveSlides();
-    });
-  }
-
-  changeSlidesWidth() {
-    const slides = document.querySelectorAll(".slide-container");
-    [...slides].forEach((slide, i) => {
-      if (slide.style.display === "block") {
-        if (this.state.activeSlides === 2)
-          slide.firstChild.style.width = slide.firstChild.clientWidth / 2 + "px";
-        if (this.state.activeSlides === 1)
-          slide.firstChild.style.width = "100%";
-      }
     });
   }
 
