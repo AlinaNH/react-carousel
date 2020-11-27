@@ -13,11 +13,19 @@ export const CarouselNav = (props) => {
       <div className="carousel-nav-button-container">
         <label>Infinity Mode</label>
         <input type="checkbox" onClick={ props.toggleInfinityMode }/>
-        <label>Show slides:</label>
-        <select onChange={ handleChange }>
-          <option>1</option>
-          <option>2</option>
-        </select>
+        {
+          (window.innerWidth > 414)
+          ? (
+            <>
+              <label>Show slides:</label>
+              <select onChange={ handleChange }>
+                <option>1</option>
+                <option>2</option>
+              </select>
+            </>
+          )
+          : <></>
+        }
       </div>
     </div>
   );

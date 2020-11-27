@@ -49,6 +49,12 @@
   }
 }
 
+@media screen and (min-width: 320px) and (max-width: 414px) {
+  .carousel-arrows-container {
+    top: 50vw;
+  }
+}
+
 @media screen and (max-width: 414px) {
   .carousel-arrows-container {
     top: 40vw;
@@ -60,11 +66,5 @@
     padding: 1vw;
     border-radius: 5vw;
     font-size: 2.3vw;
-  }
-}
-
-@media screen and (min-width: 320px) and (max-width: 414px) {
-  .carousel-arrows-container {
-    top: 50vw;
   }
 }

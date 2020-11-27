@@ -33,26 +33,32 @@
   }
 }
 
-@media screen and (min-width: 415px) and (max-width: 736px) {
+@media screen and (min-width: 416px) and (max-width: 667px) {
   .carousel-dots-container {
     margin-top: 0.5vw;
   }
 }
 
-@media screen and (max-height: 320px) {
+@media screen and (width: 568px) {
   .carousel-dots-container {
     margin-top: 1vw;
   }
 }
 
-@media screen and (min-height: 321px) and (max-height: 414px) {
+@media screen and (width: 667px) {
   .carousel-dots-container {
-    margin-top: -0.5vw;
+    margin-top: 1vw;
   }
 }
 
-@media screen and (min-width: 667px) and (max-width: 736px) {
+@media screen and (width: 736px) {
   .carousel-dots-container {
-    margin-top: 1vw;
+    margin-top: 0.5vw;
+  }
+}
+
+@media screen and (width: 812px) {
+  .carousel-dots-container {
+    margin-top: 0vw;
   }
 }
