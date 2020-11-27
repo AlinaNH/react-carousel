@@ -16,13 +16,13 @@ export const CarouselDots = (props) => {
     slides.forEach((slide, index) => {
       result.push(
         (<div
-          className="carousel-dot"
           key={ index }
+          className="carousel-dot"
           data-dot-id={ index }
-          style={ (index === 0) ? {background: "#3e728a"} : {}}
           onClick={showChosenSlide}
         ></div>))
     });
+
     setCarouselDots(result);
   }, []);
 

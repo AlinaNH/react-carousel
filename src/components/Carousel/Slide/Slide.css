@@ -1,9 +1,9 @@
 .slide-container {
   display: none;
   white-space: pre-line;
-  height: 35vw; 
-  animation: fadeSlide 1.5s;
-  -webkit-animation: fadeSlide 1.5s;
+  height: 35vw;
+  animation: animateSlide 1.5s;
+  -webkit-animation: animateSlide 1.5s;
 }
 
 .slide-container img {
@@ -27,14 +27,14 @@
   min-height: calc(40vw - 80px);
 }
 
-@keyframes fadeSlide {
-  from { opacity: 0.3 }
-  to { opacity: 1 }
+@keyframes animateSlide {
+  0% { transform: translateX(100%) }
+  100% { transform: translateX(0%) }
 }
 
-@-webkit-keyframes fadeSlide {
-  from { opacity: 0.3 }
-  to { opacity: 1 }
+@-webkit-keyframes animateSlide {
+  0% { transform: translateX(100%) }
+  100% { transform: translateX(0%) }
 }
 
 @media screen and (max-width: 415px) {

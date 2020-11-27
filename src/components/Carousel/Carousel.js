@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { CarouselNav } from "./CarouselNav/CarouselNav";
 import { CarouselArrows } from "./CarouselArrows/CarouselArrows";
-import { CarouselDots } from './CarouselDots/CarouselDots';
+import { CarouselDots } from "./CarouselDots/CarouselDots";
 import "./Carousel.css";
 
 export default class Carousel extends Component {
@@ -15,15 +15,11 @@ export default class Carousel extends Component {
       touchMoveEnd: 0
     };
     this.toggleInfinityMode = this.toggleInfinityMode.bind(this);
-    this.setActiveSlides = this.setActiveSlides.bind(this);
     this.renderActiveSlides = this.renderActiveSlides.bind(this);
+    this.setActiveSlides = this.setActiveSlides.bind(this);
     this.handleSlideChange = this.handleSlideChange.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
-  }
-
-  toggleInfinityMode() {
-    this.setState({ infinityMode: !this.state.infinityMode });
   }
 
   changeSlideAndDotByIndex(index, operation) {
@@ -39,20 +35,32 @@ export default class Carousel extends Component {
     }
   }
 
+  toggleInfinityMode() {
+    this.setState({ infinityMode: !this.state.infinityMode });
+  }
+
   renderActiveSlides() {
     this.setState(
       { currentSlide: this.state.currentSlide },
       () => {
         const slides = document.querySelectorAll(".slide-container");
-        const totalWidth = document.querySelector('.carousel-container');
+        const totalWidth = document.querySelector(".carousel-container");
+
         this.changeSlideAndDotByIndex(this.state.currentSlide, "show");
+
+        if (this.state.activeSlides === 1) {
+          [...slides].forEach((slide) => {
+              slide.firstChild.style.width = totalWidth.clientWidth + "px";
+          });
+        }
+  
         if (this.state.activeSlides === 2) {
-          if(this.state.currentSlide === slides.length - 1) {
+          if (this.state.currentSlide === slides.length - 1) {
             this.changeSlideAndDotByIndex(0, "show");
             this.changeSlideAndDotByIndex(slides.length - 1, "show");
           }
 
-          if(this.state.currentSlide === slides.length - 2)
+          if (this.state.currentSlide === slides.length - 2)
             this.changeSlideAndDotByIndex(slides.length - 1, "show");
 
           (this.state.currentSlide + 1 < slides.length - 1)
@@ -65,11 +73,6 @@ export default class Carousel extends Component {
             }
           });
         }
-        if (this.state.activeSlides === 1) {
-          [...slides].forEach((slide) => {
-              slide.firstChild.style.width = totalWidth.clientWidth + "px";
-          });
-        }
       }
     );
   }
@@ -78,38 +81,39 @@ export default class Carousel extends Component {
     const slides = document.querySelectorAll(".slide-container");
 
     this.changeSlideAndDotByIndex(this.state.currentSlide, "hide");
-    if (this.state.activeSlides === 2) {
-      if(this.state.currentSlide === slides.length - 1)
-        this.changeSlideAndDotByIndex(0, "hide");
-
-      if(this.state.currentSlide === 0) 
-        this.changeSlideAndDotByIndex(slides.length - 1, "hide");
-      
-        if(this.state.currentSlide === slides.length - 2) {
-          this.changeSlideAndDotByIndex(slides.length - 1, "hide");
-        }
-    
-      (this.state.currentSlide + 1 < slides.length - 1)
-      ? this.changeSlideAndDotByIndex(this.state.currentSlide + 1, "hide")
-      : this.changeSlideAndDotByIndex(this.state.currentSlide, "hide");
-    }
 
     if (this.state.activeSlides === 1) {
-      if (this.state.currentSlide === slides.length - 1) return;
+      if (this.state.currentSlide === slides.length - 1)
+        this.changeSlideAndDotByIndex(0, "hide");
+
       else {
         this.changeSlideAndDotByIndex(this.state.currentSlide + 1, "hide");
-        const totalWidth = document.querySelector('.carousel-container').clientWidth;
+        const totalWidth = document.querySelector(".carousel-container").clientWidth;
         slides[this.state.currentSlide].firstChild.style.width = totalWidth + "px";
         slides[this.state.currentSlide + 1].firstChild.style.width = totalWidth + "px";
       }
     }
+
+    if (this.state.activeSlides === 2) {
+      if (this.state.currentSlide === 0) 
+        this.changeSlideAndDotByIndex(slides.length - 1, "hide");
+  
+      if (this.state.currentSlide === slides.length - 1)
+        this.changeSlideAndDotByIndex(0, "hide");
+      
+        if (this.state.currentSlide === slides.length - 2)
+          this.changeSlideAndDotByIndex(slides.length - 1, "hide");
+    
+      (this.state.currentSlide + 1 < slides.length - 1)
+        ? this.changeSlideAndDotByIndex(this.state.currentSlide + 1, "hide")
+        : this.changeSlideAndDotByIndex(this.state.currentSlide, "hide");
+    }
   }
 
   setActiveSlides(quantity) {
-    this.setState({ activeSlides: quantity }, () => {
-      this.renderActiveSlides();
-      this.hideInactiveSlides();
-    });
+    this.setState({ activeSlides: quantity });
+    this.renderActiveSlides();
+    this.hideInactiveSlides();
   }
 
   handleSlideChange(nextSlide) {
@@ -119,10 +123,6 @@ export default class Carousel extends Component {
     });
   }
 
-  componentDidMount() {
-    this.renderActiveSlides();
-  }
-
   onTouchStart(e) {
     const touch = e.changedTouches[0].pageX;
     this.setState( { touchMoveStart: touch });
@@ -130,20 +130,24 @@ export default class Carousel extends Component {
 
   onTouchEnd(e) {
     if (
-        (e.target !== document.querySelector('.next-slide-button')) &&
-        (e.target !== document.querySelector('.prev-slide-button'))
+        (e.target !== document.querySelector(".next-slide-button")) &&
+        (e.target !== document.querySelector(".prev-slide-button"))
       ) {
       const touch = e.changedTouches[0].pageX;
       this.setState( { touchMoveEnd: touch }, () => {
         (this.state.touchMoveEnd < this.state.touchMoveStart)
           ? document
-            .querySelector('.next-slide-button')
+            .querySelector(".next-slide-button")
             .dispatchEvent(new Event("click", { bubbles: true }))
           : document
-            .querySelector('.prev-slide-button')
+            .querySelector(".prev-slide-button")
             .dispatchEvent(new Event("click", { bubbles: true }))
       });
     }
+  }
+
+  componentDidMount() {
+    this.renderActiveSlides();
   }
 
   render() {

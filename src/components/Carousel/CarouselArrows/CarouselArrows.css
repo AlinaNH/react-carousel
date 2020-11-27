@@ -1,7 +1,7 @@
 .carousel-arrows-container {
+  position: absolute;
   width: 100%;
   padding: 1vw;
-  position: absolute;
   top: 17vw;
   z-index: 1;
 }
@@ -16,8 +16,8 @@
   font-size: 1vw;
   font-weight: bold;
   color: #FFF;
-  mix-blend-mode: multiply;
   cursor: pointer;
+  user-select: none;     
 }
 
 .prev-slide-button:hover,
