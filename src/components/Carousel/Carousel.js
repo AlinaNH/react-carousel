@@ -14,15 +14,12 @@ export default class Carousel extends Component {
       leftSlide: 0,
       transform: 0,
       infinityMode: false,
-
-      currentSlideNumber: 0,
-      transformStep: 0,
-      infinityMode: false,
       activeSlides: 1,
       touchMoveStart: 0,
       touchMoveEnd: 0
     };
     this.toggleInfinityMode = this.toggleInfinityMode.bind(this);
+    this.setActiveSlides = this.setActiveSlides.bind(this);
     this.handleSlideChange = this.handleSlideChange.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
@@ -61,10 +58,9 @@ export default class Carousel extends Component {
       const slides = this.state.slides;
       const step = slideWidth / containerWidth * 100;
       let transform = this.state.transform;
-  
+
       if (isForward) {
         leftSlide++;
-
         if ((leftSlide + containerWidth / slideWidth - 1) > slides[this.getMaxPosition()].position) {
           nextSlide = this.getMinPosition();
           slides[nextSlide].position = slides[this.getMaxPosition()].position + 1;
@@ -84,11 +80,11 @@ export default class Carousel extends Component {
           slides[nextSlide].transform -= slides.length * 100;
           slides[nextSlide].slide.style.transform = `translateX(${ slides[nextSlide].transform }%)`;
         }
-        if (!this.state.infinityMode && (Math.abs(leftSlide) % slides.length - 1 === 0)) return;
+        if (!this.state.infinityMode && (leftSlide % slides.length - 1) === -2) return;
         transform += step;
         this.setState({ leftSlide: leftSlide, slides: slides, transform: transform });
       }
-
+      
       document.querySelector(".slides-container").style.transform = `translateX(${ transform }%)`;
     });
   }
@@ -151,7 +147,6 @@ export default class Carousel extends Component {
           : <></>
       }
       <CarouselArrows
-        currentSlideNumber={ this.state.currentSlideNumber }
         infinityMode={ this.state.infinityMode }
         activeSlides={ this.state.activeSlides }
         handleSlideChange={ this.handleSlideChange }
