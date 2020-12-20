@@ -19,7 +19,6 @@ export default class Carousel extends Component {
       touchMoveEnd: 0
     };
     this.toggleInfinityMode = this.toggleInfinityMode.bind(this);
-    this.setActiveSlides = this.setActiveSlides.bind(this);
     this.handleSlideChange = this.handleSlideChange.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
