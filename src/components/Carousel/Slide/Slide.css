@@ -2,17 +2,13 @@
   display: flex;
   white-space: pre-line;
   height: 35vw;
+  user-select: none;
 }
 
 .slide-container img {
   width: 50vw;
   min-height: calc(40vw - 80px);
   object-fit: cover;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
 }
 
 .slide-container div {
@@ -28,6 +24,10 @@
 .slide-container iframe {
   width: 50vw;
   min-height: calc(40vw - 80px);
+}
+
+.slide-container .html-content {
+  min-width: 100%;
 }
 
 @media screen and (max-width: 415px) {

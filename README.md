@@ -38,6 +38,7 @@ export const App = () => {
         <Slide type="image" content={ DATA.imgIndonesia } />
         <Slide type="text" content={ DATA.articleIndonesia } />
         <Slide type="video" content={ DATA.videoCountries } />
+        <Slide type="html" content={ DATA.html } />
       </Carousel>
     </div>
   );
@@ -57,11 +58,11 @@ navTitle | ```string``` | title for ```Carousel``` which will be indicated in na
 
 Navigation includes title for ```Carousel```, ```infinity mode``` checkbox and ```show slides``` selection. ```Infinity mode``` provides infinite slide scrolling. ```Show slides``` allows to choose how many slides should be shown on the screen (one or two). ```Show slides``` is not supported into vertical position of the phone.
 
-Child component of ```Carousel``` — ```Slide``` component — includes content which should be represented on slides (images, text or video). Here is its props:
+Child component of ```Carousel``` — ```Slide``` component — includes content which should be represented on slides (images, text, video or html content). Here is its props:
 
 Prop | Type | Definition |
 ------------ | ------------- | ------------- |
-type | ```image``` / ```text``` / ```video``` | type of the context which should be represented on slide
+type | ```image``` / ```text``` / ```video``` / ```html``` | type of the context which should be represented on slide
 content | ```string``` | string for ```text``` or path for ```image``` or ```video```
 
 

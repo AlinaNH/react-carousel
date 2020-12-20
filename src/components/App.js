@@ -17,14 +17,7 @@ export const App = () => {
         <Slide type="image" content={ DATA.imgIndia } />
         <Slide type="text" content={ DATA.articleIndia } />
 
-        <Slide type="image" content={ DATA.imgJapan } />
-        <Slide type="text" content={ DATA.articleJapan } />
-
-        <Slide type="image" content={ DATA.imgThailand } />
-        <Slide type="text" content={ DATA.articleThailand } />
-
-        <Slide type="image" content={ DATA.imgChina } />
-        <Slide type="text" content={ DATA.articleChina } />
+        <Slide type="html" content={ DATA.html } />
 
         <Slide type="video" content={ DATA.videoCountries } />
       </Carousel>

@@ -7,7 +7,7 @@ export const Slide = (props) => {
     let result;
     switch(props.type) {
       case "image":
-        result = (<img src={props.content} />);
+        result = (<img src={props.content} draggable="false" />);
         break;
 
       case "text":
@@ -17,6 +17,8 @@ export const Slide = (props) => {
       case "video":
         result = (<iframe src={ props.content }></iframe>);
         break;
+      case "html":
+        result = (<div className="html-content">{ props.content }</div>);
     }
     return result;
   }

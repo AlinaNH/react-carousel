@@ -116,14 +116,18 @@ export default class Carousel extends Component {
       (e.nativeEvent.type === "touchend")
         ? touch = e.changedTouches[0].pageX
         : touch = e.clientX;
+        const difference = this.state.touchMoveEnd - this.state.touchMoveStart;
       this.setState( { touchMoveEnd: touch }, () => {
-        (this.state.touchMoveEnd < this.state.touchMoveStart)
-          ? document
+        if (difference < -50) {
+          document
             .querySelector(".next-slide-button")
             .dispatchEvent(new Event("click", { bubbles: true }))
-          : document
+        }
+        if (difference > 50) {
+          document
             .querySelector(".prev-slide-button")
             .dispatchEvent(new Event("click", { bubbles: true }))
+        }
       });
     }
   }
