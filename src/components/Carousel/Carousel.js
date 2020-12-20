@@ -14,7 +14,6 @@ export default class Carousel extends Component {
       leftSlide: 0,
       transform: 0,
       infinityMode: false,
-      activeSlides: 1,
       current: 0,
       touchMoveStart: 0,
       touchMoveEnd: 0
@@ -29,13 +28,6 @@ export default class Carousel extends Component {
 
   toggleInfinityMode() {
     this.setState({ infinityMode: !this.state.infinityMode });
-  }
-
-  setActiveSlides(quantity) {
-    const slides = document.querySelectorAll(".slide-container");
-    const container = document.querySelector(".slides-container");
-    slides.forEach((slide) => slide.firstChild.style.width = container.clientWidth / quantity + "px");
-    this.setState({ activeSlides: quantity, slideWidth: container.clientWidth / quantity });
   }
 
   getMinPosition() {
@@ -170,7 +162,6 @@ export default class Carousel extends Component {
       }
       <CarouselArrows
         infinityMode={ this.state.infinityMode }
-        activeSlides={ this.state.activeSlides }
         handleSlideChange={ this.handleSlideChange }
       />
       <div className="slides-container">
