@@ -15,6 +15,7 @@ export default class Carousel extends Component {
       transform: 0,
       infinityMode: false,
       activeSlides: 1,
+      current: 0,
       touchMoveStart: 0,
       touchMoveEnd: 0
     };
@@ -58,6 +59,9 @@ export default class Carousel extends Component {
       const slides = this.state.slides;
       const step = slideWidth / containerWidth * 100;
       let transform = this.state.transform;
+      let current = this.state.current;
+      let previous;
+      const dots = document.querySelectorAll(".carousel-dot");
 
       if (isForward) {
         leftSlide++;
@@ -69,7 +73,9 @@ export default class Carousel extends Component {
         }
         if (!this.state.infinityMode && ((leftSlide % slides.length > slides.length - 1) || (Math.abs(leftSlide) % slides.length === 0))) return;
         transform -= step;
-        this.setState({ leftSlide: leftSlide, slides: slides, transform: transform });
+        current++;
+        if (current === slides.length) { current = 0; previous = slides.length - 1; } else previous = current - 1;
+        this.setState({ leftSlide: leftSlide, slides: slides, transform: transform, current: current });
       }
 
       if (!isForward) {
@@ -82,9 +88,13 @@ export default class Carousel extends Component {
         }
         if (!this.state.infinityMode && (leftSlide % slides.length - 1) === -2) return;
         transform += step;
-        this.setState({ leftSlide: leftSlide, slides: slides, transform: transform });
+        current--;
+        if (current < 0) { current = slides.length - 1; previous = 0; } else previous = current + 1;
+        this.setState({ leftSlide: leftSlide, slides: slides, transform: transform, current: current });
       }
-      
+
+      dots[current].style.backgroundColor = "#3e728a";
+      dots[previous].style.backgroundColor = "#494949";
       document.querySelector(".slides-container").style.transform = `translateX(${ transform }%)`;
     });
   }
@@ -154,9 +164,7 @@ export default class Carousel extends Component {
       <div className="slides-container">
         { this.props.children }
       </div>
-      <CarouselDots
-        handleSlideChange={ this.handleSlideChange }
-      />
+      <CarouselDots />
     </div>
     );
   }
