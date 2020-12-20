@@ -8,6 +8,11 @@
   width: 50vw;
   min-height: calc(40vw - 80px);
   object-fit: cover;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
 .slide-container div {

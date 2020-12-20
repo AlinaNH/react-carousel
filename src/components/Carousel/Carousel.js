@@ -100,7 +100,10 @@ export default class Carousel extends Component {
   }
 
   onTouchStart(e) {
-    const touch = e.changedTouches[0].pageX;
+    let touch;
+    (e.nativeEvent.type === "touchstart")
+      ? touch = e.changedTouches[0].pageX
+      : touch = e.clientX;
     this.setState( { touchMoveStart: touch });
   }
 
@@ -109,7 +112,10 @@ export default class Carousel extends Component {
         (e.target !== document.querySelector(".next-slide-button")) &&
         (e.target !== document.querySelector(".prev-slide-button"))
       ) {
-      const touch = e.changedTouches[0].pageX;
+      let touch;
+      (e.nativeEvent.type === "touchend")
+        ? touch = e.changedTouches[0].pageX
+        : touch = e.clientX;
       this.setState( { touchMoveEnd: touch }, () => {
         (this.state.touchMoveEnd < this.state.touchMoveStart)
           ? document
@@ -146,6 +152,8 @@ export default class Carousel extends Component {
         className="carousel-container"
         onTouchStart = { this.onTouchStart }
         onTouchEnd = { this.onTouchEnd }
+        onMouseDown = { this.onTouchStart }
+        onMouseUp = { this.onTouchEnd }
       >
       {
         (this.props.enableNav)
