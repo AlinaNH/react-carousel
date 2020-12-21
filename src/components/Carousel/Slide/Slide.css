@@ -1,9 +1,8 @@
 .slide-container {
-  display: none;
+  display: flex;
   white-space: pre-line;
   height: 35vw;
-  animation: animateSlide 1.5s;
-  -webkit-animation: animateSlide 1.5s;
+  user-select: none;
 }
 
 .slide-container img {
@@ -13,7 +12,7 @@
 }
 
 .slide-container div {
-  height: 100;
+  width: 50vw;
   height: calc(40vw - 80px);
   padding: 5vw;
   font-family: Verdana, sans-serif;
@@ -27,14 +26,8 @@
   min-height: calc(40vw - 80px);
 }
 
-@keyframes animateSlide {
-  0% { transform: translateX(100%) }
-  100% { transform: translateX(0%) }
-}
-
-@-webkit-keyframes animateSlide {
-  0% { transform: translateX(100%) }
-  100% { transform: translateX(0%) }
+.slide-container .html-content {
+  min-width: 100%;
 }
 
 @media screen and (max-width: 415px) {

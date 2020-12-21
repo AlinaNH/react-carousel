@@ -8,123 +8,93 @@ export default class Carousel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentSlide: 0,
+      slides: [],
+      slideWidth: 0,
+      isForward: true,
+      leftSlide: 0,
+      transform: 0,
       infinityMode: false,
-      activeSlides: 1,
+      current: 0,
       touchMoveStart: 0,
       touchMoveEnd: 0
     };
     this.toggleInfinityMode = this.toggleInfinityMode.bind(this);
-    this.renderActiveSlides = this.renderActiveSlides.bind(this);
-    this.setActiveSlides = this.setActiveSlides.bind(this);
     this.handleSlideChange = this.handleSlideChange.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
   }
 
-  changeSlideAndDotByIndex(index, operation) {
-    const slides = document.querySelectorAll(".slide-container");
-    const dots = document.querySelectorAll(".carousel-dot");
-    if (operation === "show") {
-      slides[index].style.display = "block";
-      dots[index].style.backgroundColor = "#3e728a";
-    }
-    if (operation === "hide") {
-      slides[index].style.display = "none";
-      dots[index].style.backgroundColor = "#494949";
-    }
-  }
 
   toggleInfinityMode() {
     this.setState({ infinityMode: !this.state.infinityMode });
   }
 
-  renderActiveSlides() {
-    this.setState(
-      { currentSlide: this.state.currentSlide },
-      () => {
-        const slides = document.querySelectorAll(".slide-container");
-        const totalWidth = document.querySelector(".carousel-container");
+  getMinPosition() {
+    const positions = this.state.slides.map(slide => slide.position);
+    const minPosition = Math.min(...positions);
+    return this.state.slides.findIndex((slide) => slide.position === minPosition);
+  }
 
-        this.changeSlideAndDotByIndex(this.state.currentSlide, "show");
+  getMaxPosition() {
+    const positions = this.state.slides.map(slide => slide.position);
+    const maxPosition = Math.max(...positions);
+    return this.state.slides.findIndex((slide) => slide.position === maxPosition);
+  }
 
-        if (this.state.activeSlides === 1) {
-          [...slides].forEach((slide) => {
-              slide.firstChild.style.width = totalWidth.clientWidth + "px";
-          });
+  handleSlideChange(isForward) {
+    this.setState({}, () => {
+      let leftSlide = this.state.leftSlide;
+      const containerWidth = document.querySelector(".slides-container").clientWidth;
+      const slideWidth = this.state.slideWidth;
+      let nextSlide;
+      const slides = this.state.slides;
+      const step = slideWidth / containerWidth * 100;
+      let transform = this.state.transform;
+      let current = this.state.current;
+      let previous;
+      const dots = document.querySelectorAll(".carousel-dot");
+
+      if (isForward) {
+        leftSlide++;
+        if ((leftSlide + containerWidth / slideWidth - 1) > slides[this.getMaxPosition()].position) {
+          nextSlide = this.getMinPosition();
+          slides[nextSlide].position = slides[this.getMaxPosition()].position + 1;
+          slides[nextSlide].transform += slides.length * 100;
+          slides[nextSlide].slide.style.transform = `translateX(${ slides[nextSlide].transform }%)`;
         }
-  
-        if (this.state.activeSlides === 2) {
-          if (this.state.currentSlide === slides.length - 1) {
-            this.changeSlideAndDotByIndex(0, "show");
-            this.changeSlideAndDotByIndex(slides.length - 1, "show");
-          }
+        if (!this.state.infinityMode && ((leftSlide % slides.length > slides.length - 1) || (Math.abs(leftSlide) % slides.length === 0))) return;
+        transform -= step;
+        current++;
+        if (current === slides.length) { current = 0; previous = slides.length - 1; } else previous = current - 1;
+        this.setState({ leftSlide: leftSlide, slides: slides, transform: transform, current: current });
+      }
 
-          if (this.state.currentSlide === slides.length - 2)
-            this.changeSlideAndDotByIndex(slides.length - 1, "show");
-
-          (this.state.currentSlide + 1 < slides.length - 1)
-            ? this.changeSlideAndDotByIndex(this.state.currentSlide + 1, "show")
-            : this.changeSlideAndDotByIndex(this.state.currentSlide, "show");
-          
-          [...slides].forEach((slide) => {
-            if (slide.style.display === "block") {
-              slide.firstChild.style.width = totalWidth.clientWidth / 2 + "px";
-            }
-          });
+      if (!isForward) {
+        leftSlide--;
+        if (leftSlide < slides[this.getMinPosition()].position) {
+          nextSlide = this.getMaxPosition();
+          slides[nextSlide].position = slides[this.getMinPosition()].position - 1;
+          slides[nextSlide].transform -= slides.length * 100;
+          slides[nextSlide].slide.style.transform = `translateX(${ slides[nextSlide].transform }%)`;
         }
+        if (!this.state.infinityMode && (leftSlide % slides.length - 1) === -2) return;
+        transform += step;
+        current--;
+        if (current < 0) { current = slides.length - 1; previous = 0; } else previous = current + 1;
+        this.setState({ leftSlide: leftSlide, slides: slides, transform: transform, current: current });
       }
-    );
-  }
 
-  hideInactiveSlides() {
-    const slides = document.querySelectorAll(".slide-container");
-
-    this.changeSlideAndDotByIndex(this.state.currentSlide, "hide");
-
-    if (this.state.activeSlides === 1) {
-      if (this.state.currentSlide === slides.length - 1)
-        this.changeSlideAndDotByIndex(0, "hide");
-
-      else {
-        this.changeSlideAndDotByIndex(this.state.currentSlide + 1, "hide");
-        const totalWidth = document.querySelector(".carousel-container").clientWidth;
-        slides[this.state.currentSlide].firstChild.style.width = totalWidth + "px";
-        slides[this.state.currentSlide + 1].firstChild.style.width = totalWidth + "px";
-      }
-    }
-
-    if (this.state.activeSlides === 2) {
-      if (this.state.currentSlide === 0) 
-        this.changeSlideAndDotByIndex(slides.length - 1, "hide");
-  
-      if (this.state.currentSlide === slides.length - 1)
-        this.changeSlideAndDotByIndex(0, "hide");
-      
-        if (this.state.currentSlide === slides.length - 2)
-          this.changeSlideAndDotByIndex(slides.length - 1, "hide");
-    
-      (this.state.currentSlide + 1 < slides.length - 1)
-        ? this.changeSlideAndDotByIndex(this.state.currentSlide + 1, "hide")
-        : this.changeSlideAndDotByIndex(this.state.currentSlide, "hide");
-    }
-  }
-
-  setActiveSlides(quantity) {
-    this.setState({ activeSlides: quantity });
-    this.renderActiveSlides();
-    this.hideInactiveSlides();
-  }
-
-  handleSlideChange(nextSlide) {
-    this.hideInactiveSlides();
-    this.setState({ currentSlide: nextSlide }, () => {
-        this.renderActiveSlides();
+      dots[current].style.backgroundColor = "#3e728a";
+      dots[previous].style.backgroundColor = "#494949";
+      document.querySelector(".slides-container").style.transform = `translateX(${ transform }%)`;
     });
   }
 
   onTouchStart(e) {
-    const touch = e.changedTouches[0].pageX;
+    let touch;
+    (e.nativeEvent.type === "touchstart")
+      ? touch = e.changedTouches[0].pageX
+      : touch = e.clientX;
     this.setState( { touchMoveStart: touch });
   }
 
@@ -133,21 +103,42 @@ export default class Carousel extends Component {
         (e.target !== document.querySelector(".next-slide-button")) &&
         (e.target !== document.querySelector(".prev-slide-button"))
       ) {
-      const touch = e.changedTouches[0].pageX;
+      let touch;
+      (e.nativeEvent.type === "touchend")
+        ? touch = e.changedTouches[0].pageX
+        : touch = e.clientX;
+        const difference = this.state.touchMoveEnd - this.state.touchMoveStart;
       this.setState( { touchMoveEnd: touch }, () => {
-        (this.state.touchMoveEnd < this.state.touchMoveStart)
-          ? document
+        if (difference < -50) {
+          document
             .querySelector(".next-slide-button")
             .dispatchEvent(new Event("click", { bubbles: true }))
-          : document
+        }
+        if (difference > 50) {
+          document
             .querySelector(".prev-slide-button")
             .dispatchEvent(new Event("click", { bubbles: true }))
+        }
       });
     }
   }
 
   componentDidMount() {
-    this.renderActiveSlides();
+    this.setState({}, () => {
+      const slides = document.querySelectorAll(".slide-container");
+      const slidesData = [];
+  
+      [...slides].forEach((slide, index) => {
+        slidesData.push({
+          slide: slide,
+          position: index,
+          transform: 0
+        });
+      });
+      this.setState({ slides: slidesData, slideWidth: slides[0].clientWidth });
+      document.querySelector(".slide-container").style.display = "flex";
+      document.querySelector(".carousel-dot").style.backgroundColor = "#3e728a";
+    })
   }
 
   render() {
@@ -156,6 +147,8 @@ export default class Carousel extends Component {
         className="carousel-container"
         onTouchStart = { this.onTouchStart }
         onTouchEnd = { this.onTouchEnd }
+        onMouseDown = { this.onTouchStart }
+        onMouseUp = { this.onTouchEnd }
       >
       {
         (this.props.enableNav)
@@ -167,17 +160,13 @@ export default class Carousel extends Component {
           : <></>
       }
       <CarouselArrows
-        currentSlide={ this.state.currentSlide }
         infinityMode={ this.state.infinityMode }
-        activeSlides={ this.state.activeSlides }
         handleSlideChange={ this.handleSlideChange }
       />
       <div className="slides-container">
         { this.props.children }
       </div>
-      <CarouselDots
-        handleSlideChange={ this.handleSlideChange }
-      />
+      <CarouselDots />
     </div>
     );
   }
